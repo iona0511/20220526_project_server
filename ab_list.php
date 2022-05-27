@@ -31,10 +31,6 @@ if($totalRows>0){
 }
 
 
-
-
-
-
 ?>
 <!-- 以下是html 呈現 -->
 <?php include __DIR__ . '/parts/html_menu_head.php' ?>
@@ -45,7 +41,8 @@ if($totalRows>0){
         <div class="col">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item <?=$page ==1 ? 'disabled' : ''?>"><a class="page-link" href="?page=<?=$page-1?>">Previous</a></li>
+                <li class="page-item <?=$page == 1 ? 'disabled' : ''?>"><a class="page-link" href="?page=1"><i class="fa-solid fa-angles-left"></i></a></li>
+                <li class="page-item <?=$page ==$page ? '$page-1' : ''?>"><a class="page-link" href="?page=<?=$page-1?>"><i class="fa-solid fa-angle-left"></i></a></li>
 
                 <? for($i=1;$i<=$totalPages;$i++):?>
                     <!-- active這段是為了讓頁碼反白 -->
@@ -53,7 +50,8 @@ if($totalRows>0){
                         <a class="page-link" href="?page=<?=$i?>"><?=$i?></a>
                     </li>
                 <?endfor;?>
-                <li class="page-item <?= $page ==$totalPages ? 'disabled' : '' ?>"><a class="page-link" href="?page=<?=$page+1?>">Next</a></li>
+                <li class="page-item <?=$page ==$page ? '$page' : ''?>"><a class="page-link" href="?page=<?=$page+1?>"><i class="fa-solid fa-angle-right"></i></a></li>
+                <li class="page-item <?= $page ==$totalPages ? 'disabled' : '' ?>"><a class="page-link" href="?page=<?=$totalPages?>"><i class="fa-solid fa-angles-right"></i></a></li>
             </ul>
 </nav>
         </div>
