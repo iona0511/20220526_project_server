@@ -7,6 +7,9 @@ $output=[
 'code'=> 0,
 'error'=>''
 ];
+
+$menu_sid = isset($_POST['menu_sid']) ? intval($_POST['menu_sid']) : 0;
+
 // 欄位檢查，後端的檢查
 
 // if(empty($_POST['menu_categories'])){
@@ -27,8 +30,7 @@ $menu_nutrition = $_POST['menu_nutrition']??'';
 
 
 
-$sql = "INSERT INTO `menu`(`menu_categories`, `menu_photo`, `menu_name`, `menu_kcal`, `menu_price_m`, `menu_price_l`, `menu_nutrition`, `created_at`) VALUES (?,?,?,?,?,?,?,NOW()
-)";
+$sql = "UPDATE `menu` SET `menu_categories`=?, `menu_photo`=?, `menu_name`=?, `menu_kcal`=?, `menu_price_m`=?, `menu_price_l`=?, `menu_nutrition`=? WHERE `menu_sid`=$menu_sid";
 $stmt = $pdo->prepare($sql);
 $stmt ->execute([
     $menu_categories,
