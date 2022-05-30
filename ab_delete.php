@@ -11,5 +11,6 @@ if (!empty($_SERVER['HTTP_REFERER'])) {
     $come_from = $_SERVER['HTTP_REFERER'];
 }
 
+
 header("Location: $come_from");
 
