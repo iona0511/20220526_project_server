@@ -20,7 +20,7 @@ $title = '新增菜單資料';
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">新增菜單資料</h5>
-                    <form name="form1" onsubmit="sendData();return false;" novalidate>
+                    <form name="form1" onsubmit="sendData();return false;novalidate">
                         <div class="mb-3">
                             <label for="menu_categories" class="form-label">種類</label>
                             <input type="text" class="form-control" id="menu_categories" name="menu_categories" required>
@@ -81,7 +81,7 @@ $title = '新增菜單資料';
 
 <script>
 
-    const info_bar_f = document.querySelector('#info-bar');
+    const info_bar = document.querySelector('#info-bar');
     const menu_categories_f = document.form1.menu_categories;
     const menu_photo_f = document.form1.menu_photo;
     const menu_name_f = document.form1.menu_name;
@@ -96,14 +96,19 @@ $title = '新增菜單資料';
 
     // f是拿到fields裡面的參照
     for(let f of fields){
-        fieldTexts.push(f.nextElementSibiling);
+        fieldTexts.push(f.nextElementSibling);
+        
     }
+
 
     async function sendData() {
         // 讓欄位的外觀回復原來的狀態
         for (let i in fields) {
             fields[i].classList.remove('red');
+            console.log('fieldTexts ', fieldTexts)
+            // console.log('i  ', i)
             fieldTexts[i].innerText = '';
+
         }
         info_bar.style.display = 'none'; // 隱藏訊息列
 
@@ -162,12 +167,13 @@ $title = '新增菜單資料';
         console.log(result);
         info_bar.style.display = 'block'; // 顯示訊息列
         if (result.success) {
+            // success是對應到後端
             info_bar.classList.remove('alert-danger');
             info_bar.classList.add('alert-success');
             info_bar.innerText = '新增成功';
 
             setTimeout(() => {
-                // location.href = 'ab-list.php'; // 跳轉到列表頁
+                // location.href = 'ab＿list.php'; // 跳轉到列表頁
             }, 2000);
         } else {
             info_bar.classList.remove('alert-success');

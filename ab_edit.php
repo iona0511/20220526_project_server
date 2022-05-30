@@ -1,12 +1,21 @@
 <?php require __DIR__ . '/parts/connect_db.php';
 $pageName = 'ab_edit';
-$title = '編輯菜單資料';
+$title = '修改菜單資料';
+
 
 $menu_sid = isset($_GET['menu_sid']) ? intval($_GET['menu_sid']) : 0;
-if(!empty($menu_sid)){
-    header('Location:ab_list.php');
+if (empty($menu_sid)) {
+    header('Location: ab_list.php');
     exit;
-};
+}
+
+$row = $pdo->query("SELECT * FROM menu WHERE menu_sid = $menu_sid")->fetch();
+if (empty($row)) {
+    header('Location: ab_list.php');
+    exit;
+}
+
+
 
 
 ?>
@@ -26,55 +35,56 @@ if(!empty($menu_sid)){
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">新增菜單資料</h5>
+                    <h5 class="card-title">編輯菜單資料</h5>
                     <form name="form1" onsubmit="sendData();return false;novalidate">
+                    <input type ="hidden" name="menu_sid" value="<?=$row['menu_sid']?>">
                         <div class="mb-3">
                             <label for="menu_categories" class="form-label">種類</label>
-                            <input type="text" class="form-control" id="menu_categories" name="menu_categories" required>
+                            <input type="text" class="form-control" id="menu_categories" name="menu_categories" required value="<?=$row['menu_categories']?>">
                             <div class="form-text red"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="menu_photo" class="form-label">圖片</label>
-                            <input type="text" class="form-control" id="menu_photo" name="menu_photo">
+                            <input type="text" class="form-control" id="menu_photo" name="menu_photo" value="<?=$row['menu_photo']?>">
                             <div class="form-text red"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="menu_name" class="form-label">名稱</label>
-                            <input type="text" class="form-control" id="menu_name" name="menu_name">
+                            <input type="text" class="form-control" id="menu_name" name="menu_name" value="<?=$row['menu_name']?>">
                             <div class="form-text red"></div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="menu_kcal" class="form-label">熱量</label>
-                            <input type="text" class="form-control" id="menu_kcal" name="menu_kcal">
+                            <input type="text" class="form-control" id="menu_kcal" name="menu_kcal"value="<?=$row['menu_kcal']?>">
                             <div class="form-text"></div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="menu_price_m" class="form-label">價格(M)</label>
-                            <input class="form-control" name="menu_price_m" id="menu_price_m" cols="30" rows="3"></input>
+                            <input class="form-control" name="menu_price_m" id="menu_price_m" cols="30" rows="3" value="<?=$row['menu_price_m']?>"></input>
                             <div class="form-text"></div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="menu_price_l" class="form-label">價格(L)</label>
-                            <input class="form-control" name="menu_price_l" id="menu_price_l" cols="30" rows="3"></input>
+                            <input class="form-control" name="menu_price_l" id="menu_price_l" cols="30" rows="3" value="<?=$row['menu_price_l']?>"></input>
                             <div class="form-text"></div>
                         </div>
                         
                         <div class="mb-3">
                             <label for="menu_nutrition" class="form-label">營養標示資訊</label>
-                            <textarea class="form-control" name="menu_nutrition" id="menu_nutrition" cols="30" rows="3"></textarea>
+                            <textarea class="form-control" name="menu_nutrition" id="menu_nutrition" cols="30" rows="3"><?=htmlentities($row['menu_nutrition'])?></textarea>
                             <div class="form-text"></div>
                         </div>
-                        
+                        <!-- htmlentities是為了跳脫字元，strip_tags是為了把內容的tag移除 -->
 
-                        <button type="submit" class="btn btn-primary">新增</button>
+                        <button type="submit" class="btn btn-primary">編輯</button>
                     </form>
                     <div id="info-bar" class="alert alert-success" role="alert" style="display:none;">
-                        資料新增成功
+                        資料編輯成功
                     </div>
                 </div>
             </div>
@@ -87,7 +97,7 @@ if(!empty($menu_sid)){
 
 
 <script>
-
+    const row = <?= json_encode($row, JSON_UNESCAPED_UNICODE); ?>;
     const info_bar = document.querySelector('#info-bar');
     const menu_categories_f = document.form1.menu_categories;
     const menu_photo_f = document.form1.menu_photo;
@@ -166,7 +176,7 @@ if(!empty($menu_sid)){
         }
 
         const fd = new FormData(document.form1);
-        const r = await fetch('ab_add_api.php', {
+        const r = await fetch('ab_edit_api.php', {
             method: 'POST',
             body: fd,
         });
@@ -177,7 +187,7 @@ if(!empty($menu_sid)){
             // success是對應到後端
             info_bar.classList.remove('alert-danger');
             info_bar.classList.add('alert-success');
-            info_bar.innerText = '新增成功';
+            info_bar.innerText = '編輯成功';
 
             setTimeout(() => {
                 // location.href = 'ab＿list.php'; // 跳轉到列表頁
@@ -185,7 +195,7 @@ if(!empty($menu_sid)){
         } else {
             info_bar.classList.remove('alert-success');
             info_bar.classList.add('alert-danger');
-            info_bar.innerText = result.error || '資料無法新增';
+            info_bar.innerText = result.error || '資料沒有修改';
         }
 
     }

@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <?php
-$ice_choice = [
-    '1'=>'無糖',
-    '2'=>'一分糖',
-    '3'=>'半糖',
-    '4'=>'七分糖',
-    '5'=>'全糖',
+$icechoice = [
+    '1'=>'正常冰',
+    '2'=>'少冰',
+    '3'=>'去冰',
+    '4'=>'常溫',
+    '5'=>'熱',
+];
+$sugarchoice = [
+    '6'=>'無糖',
+    '7'=>'一分糖',
+    '8'=>'半糖',
+    '9'=>'七分糖',
+    '10'=>'全糖',
 ]
 
 
@@ -29,6 +36,37 @@ $ice_choice = [
     </head>
     <body>
         <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form name="form1"onsubmit="return false;">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">冰塊</label>
+                            <!-- combobox -->
+                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="icechoice">
+                                <option value="" selected disabled>-- 請選擇 --</option>
+                            <?php foreach($icechoice as $k=> $v) : ?>
+                                <option value="<?=$k?>"><?=$v?></option>
+                            <?php endforeach;?> 
+                            </select>
+                        </div>  
+
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">甜度選擇</label>
+                            <?php foreach($sugarchoice as $k => $v): ?>
+                            <div class="form-check">
+                                <!-- name跟id要一樣才會有相同的group -->
+                                <input class="form-check-input" type="radio" name="sugarchoice" id="sugarchoice<?=$k?>" value="<?=$k?>"> 
+                                <label class="form-check-label" for="sugarchoice<?=$k?>">
+                                  <?=$v?>
+                                </label>
+                            </div>
+                            <?php endforeach;?>    
+                            
+                        </div>  
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
 
 
             

@@ -59,7 +59,8 @@ if($totalRows>0){
 
     <table class="table table-warning table-striped">
         <thead>
-            <tr>
+            <tr>                
+                <th scope="col"><i class="fa-solid fa-trash-can"></i></th>
                 <th scope="col">#</th>
                 <th scope="col">種類</th>
                 <th scope="col">圖片</th>
@@ -69,14 +70,20 @@ if($totalRows>0){
                 <th scope="col">價格(L)</th>
                 <th scope="col">營養標示資訊</th>
                 <th scope="col">建立日期</th>
+                <th scope="col"><i class="fa-solid fa-pen-to-square"></i></th>
             </tr>
         </thead>
         <tbody>
             <!-- $r 會拿到某一筆, foreach是跑迴圈 -->
             <?php foreach ($rows as $r ):?>
                 <tr>
+                    <td> 
+                        <a href="javascript: delete_it(<?= $r['menu_sid'] ?>)">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+                    </td>
                     <td><?= $r['menu_sid'] ?></td>
-                    <td><?= $r['menu_categories'] ?></td>
+                    <td><?= htmlentities($r['menu_categories'])?></td>
                     <td><?= $r['menu_photo'] ?></td>
                     <td><?= $r['menu_name'] ?></td>
                     <td><?= $r['menu_kcal'] ?></td>
@@ -84,17 +91,29 @@ if($totalRows>0){
                     <td><?= $r['menu_price_l'] ?></td>
                     <td><?= $r['menu_nutrition'] ?></td>
                     <td><?= $r['created_at'] ?></td>
+                    <td>
+                        <a href="ab_edit.php?menu_sid=<?= $r['menu_sid'] ?>">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 
-
-
-
 </div>
 
-
-
 <?php include __DIR__ . '/parts/scripts.php' ?>
+<script>
+    function delete_it(menu_sid){
+        if (confirm(`確定要刪除資料編號為${menu_sid}的資料嗎`)){
+            location.href = `ab_delete.php?menu_sid=${menu_sid}`;
+        }
+    }
+// 小作業 
+// 做一個checkbox 就可以刪除全部
+
+                
+</script>
+
 <?php include __DIR__ . '/parts/html_menu_foot.php' ?>
